@@ -15,9 +15,9 @@ sqlite3
 
 ## Running
 ```shell
-cd server
-python API.py
+docker build -t evaso .
+docker run -v  PATH:/server -p 5000:5000 -d -t --restart always evaso
 ```
-Then go to http://127.0.0.1:5000/ and enter your address.
+Then go to localhost:5000 and enter your address.
 
 All the new entries will be saved in the database addresses.db
