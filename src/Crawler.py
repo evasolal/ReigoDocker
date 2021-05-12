@@ -1,7 +1,4 @@
 from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.support import expected_conditions as EC
-#from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import numpy as np
@@ -11,13 +8,7 @@ import os
 PREFIX = 'https://www.zillow.com/homes/'
 
 print(os.path.dirname(os.path.realpath(__file__)))
-'''
-options = webdriver.ChromeOptions()
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
-driver = webdriver.Chrome(chrome_options = options)
-driver.file_detector = UselessFileDetector()
-'''
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--start-maximized")
 chrome_options.add_argument('--headless')
@@ -80,19 +71,11 @@ def get_info(address):
     url = get_address(address)
     
     driver.get(url)
-    #time.sleep(15)
-    #bt_submit = driver.find_element_by_css_selector("[type=submit]")
-
-# wait for the user to click the submit button (check every 1s with a 1000s timeout)
-    #WebDriverWait(driver, timeout=15, poll_frequency=1).until(EC.staleness_of(bt_submit))
 
     lst = []
     lst += get_bd_ba_size(driver)
-    lst.append(get_sold_date(driver))
-    lst.append(get_Zestimate(driver))
-    lst.append(get_walk_Score(driver))
-    lst.append(get_transit_Score(driver))
-    lst.append(get_GreateSchools(driver))
+    lst += [get_sold_date(driver), get_Zestimate(driver), get_walk_Score(driver)]
+    lst += [get_transit_Score(driver), get_GreateSchools(driver)]
     return lst
 
 #Convert a float written with a , to a regular float
@@ -100,6 +83,4 @@ def to_decimal(x):
     num = x.split(',')
     return int(x) if len(num) <= 1 else float(num[0]+'.'+num[1])
 
-#print(get_info('2517 E 13th St, Indianapolis, IN 46201'))
-#print(get_info('5689 Versailles Ave, Ann Arbor, MI 48103'))
-#print(get_info('1500 N Lake Shore Dr #4B, Chicago, IL 60610'))
+
